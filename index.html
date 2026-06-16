@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo2.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my-project</title>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['Sora', 'sans-serif'],
+              body: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#EFF6FF',
+                100: '#DBEAFE',
+                200: '#BFDBFE',
+                400: '#60A5FA',
+                600: '#2563EB',
+                700: '#1D4ED8',
+                800: '#1E3A8A',
+                900: '#1E2F6A',
+              },
+              teal: {
+                50: '#F0FDFA',
+                100: '#CCFBF1',
+                400: '#2DD4BF',
+                600: '#0D9488',
+                800: '#115E59',
+              },
+            },
+          },
+        },
+      }
+    </script>
+  </head>
+  <body class="bg-white text-gray-900 antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
