@@ -10,7 +10,7 @@ export const Header = () => {
               className="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
               viewBox="0 0 24 24"
             >
               <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" />
@@ -28,10 +28,7 @@ export const Header = () => {
           >
             Locations
           </a>
-          <a
-            href="#services"
-            className="hover:text-blue-600 transition-colors"
-          >
+          <a href="#services" className="hover:text-blue-600 transition-colors">
             Services
           </a>
           <a href="#about" className="hover:text-blue-600 transition-colors">

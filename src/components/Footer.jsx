@@ -10,7 +10,7 @@ export const Footer = () => {
                 className="w-3 h-3 text-white"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" />

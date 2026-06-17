@@ -23,7 +23,7 @@ export const Services = () => {
                 className="w-5 h-5 text-blue-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -46,7 +46,7 @@ export const Services = () => {
                 className="w-5 h-5 text-blue-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -69,7 +69,7 @@ export const Services = () => {
                 className="w-5 h-5 text-blue-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -92,7 +92,7 @@ export const Services = () => {
                 className="w-5 h-5 text-teal-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -115,7 +115,7 @@ export const Services = () => {
                 className="w-5 h-5 text-teal-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M7 21h10M12 3v18M3 9h18" />
@@ -138,7 +138,7 @@ export const Services = () => {
                 className="w-5 h-5 text-teal-600"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -157,4 +157,4 @@ export const Services = () => {
       </div>
     </section>
   );
-}
+};

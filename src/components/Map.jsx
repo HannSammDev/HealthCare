@@ -1,6 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+
+const API_KEY = "AIzaSyAZ9iUgH4GsrunSBl4xo2FZg_zazccUAzY";
+
+const branches = [
+  {
+    name: "Cebu IT Park",
+    area: "Lahug, Cebu City",
+    q: "Cebu+IT+Park,Lahug,Cebu+City",
+    directionsUrl: "https://maps.google.com/?q=Cebu+IT+Park,Lahug,Cebu+City",
+  },
+  {
+    name: "Ayala Center Cebu",
+    area: "Cebu Business Park",
+    q: "Ayala+Center+Cebu,Cebu+Business+Park",
+    directionsUrl:
+      "https://maps.google.com/?q=Ayala+Center+Cebu,Cebu+Business+Park",
+  },
+  {
+    name: "SM City Cebu",
+    area: "North Reclamation Area",
+    q: "SM+City+Cebu,North+Reclamation+Area",
+    directionsUrl:
+      "https://maps.google.com/?q=SM+City+Cebu,North+Reclamation+Area",
+  },
+  {
+    name: "Mandaue Branch",
+    area: "A.S. Fortuna St.",
+    q: "AS+Fortuna+Street,Mandaue+City,Cebu",
+    directionsUrl:
+      "https://maps.google.com/?q=AS+Fortuna+Street,Mandaue+City,Cebu",
+  },
+  {
+    name: "Mactan Branch",
+    area: "Lapu-Lapu City",
+    q: "Lapu-Lapu+City,Cebu",
+    directionsUrl: "https://maps.google.com/?q=Lapu-Lapu+City,Cebu",
+  },
+];
 
 export const Map = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const active = branches[activeIndex];
+
   return (
     <section className="bg-gradient-to-b from-white to-blue-50 py-12 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
@@ -36,32 +78,42 @@ export const Map = () => {
               Our Branches
             </p>
 
-            {[
-              { name: "Cebu IT Park", area: "Lahug, Cebu City" },
-              { name: "Ayala Center Cebu", area: "Cebu Business Park" },
-              { name: "SM City Cebu", area: "North Reclamation Area" },
-              { name: "Mandaue Branch", area: "A.S. Fortuna St." },
-              { name: "Mactan Branch", area: "Lapu-Lapu City" },
-            ].map((clinic, i) => (
-              <div
+            {branches.map((branch, i) => (
+              <button
                 key={i}
-                className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-blue-50 cursor-pointer transition-colors group"
+                onClick={() => setActiveIndex(i)}
+                className={`flex items-start gap-3 p-2.5 rounded-xl cursor-pointer transition-colors text-left w-full border-0 ${
+                  activeIndex === i
+                    ? "bg-blue-50 ring-1 ring-blue-200"
+                    : "hover:bg-blue-50"
+                }`}
               >
-                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                    activeIndex === i
+                      ? "bg-blue-600 text-white"
+                      : "bg-blue-100 text-blue-600"
+                  }`}
+                >
                   {i + 1}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-700">
-                    {clinic.name}
+                  <p
+                    className={`text-sm font-semibold ${
+                      activeIndex === i ? "text-blue-700" : "text-gray-700"
+                    }`}
+                  >
+                    {branch.name}
                   </p>
-                  <p className="text-xs text-gray-400">{clinic.area}</p>
+                  <p className="text-xs text-gray-400">{branch.area}</p>
                 </div>
-              </div>
+              </button>
             ))}
 
-            {/* ✅ Fixed: was missing the opening <a */}
             <a
-              href="#"
+              href={active.directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-auto text-center text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors py-2.5 rounded-xl"
             >
               Get Directions →
@@ -71,7 +123,8 @@ export const Map = () => {
           {/* Map */}
           <div className="flex-1 min-h-[350px] lg:min-h-[480px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.1500133923596!2d123.90555827354548!3d10.329877367274682!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99921dc1502cd%3A0x14da459df63f6995!2sCebu%20IT%20Park!5e0!3m2!1sen!2sph!4v1781578727006!5m2!1sen!2sph"
+              key={activeIndex}
+              src={`https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${active.q}`}
               width="100%"
               height="100%"
               style={{ border: 0, display: "block", minHeight: "350px" }}
