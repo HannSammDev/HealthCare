@@ -3,24 +3,25 @@ import { auth } from "./Config/firebase";
 import { signOut } from "firebase/auth";
 import {
   FiMenu,
-  FiSearch,
   FiHome,
-  FiClipboard,
-  FiGrid,
   FiCalendar,
-  FiBriefcase,
-  FiArchive,
   FiUsers,
+  FiArchive,
   FiBell,
   FiChevronLeft,
   FiChevronRight,
+  FiActivity,
+  FiUserCheck,
+  FiGitBranch,
+  FiBarChart2,
+  FiCpu,
 } from "react-icons/fi";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Button } from "./components/Button";
 
 export const Dash_Board = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false); // mobile overlay
-  const [collapsed, setCollapsed] = useState(false); // ← NEW: icon-only mode
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -39,7 +40,6 @@ export const Dash_Board = () => {
     navigate("/");
   }
 
-  // Width values driven by collapsed state
   const sidebarW = collapsed ? "w-[60px]" : "w-[200px]";
   const mainML = collapsed ? "md:ml-[60px]" : "md:ml-[200px]";
 
@@ -61,7 +61,6 @@ export const Dash_Board = () => {
         onClick={() => setSidebarOpen(false)}
       >
         <Icon className={iconClass} />
-        {/* Label fades + collapses; does NOT shift the icon */}
         <span
           className={`ml-3 text-sm font-medium whitespace-nowrap transition-all duration-200 ${
             collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto"
@@ -78,13 +77,10 @@ export const Dash_Board = () => {
     </li>
   );
 
-  // Replace the outer structure in Dash_Board.jsx
-
   return (
     <>
       {/* ── Top Navbar ── */}
       <div className="fixed top-0 left-0 right-0 z-50 flex bg-white items-center justify-between px-4 h-14 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-        {/* Left: hamburger (mobile) + logo */}
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -110,8 +106,6 @@ export const Dash_Board = () => {
           <span className="font-display font-bold text-lg text-blue-800 dark:text-white">
             HealthFirst
           </span>
-
-          {/* Divider + breadcrumb */}
           <span className="hidden md:block text-gray-300 dark:text-gray-600 ml-2">
             |
           </span>
@@ -119,21 +113,19 @@ export const Dash_Board = () => {
             Overview
           </span>
         </div>
-
-        {/* Right: user/actions */}
         <Button />
       </div>
 
-      {/* ── Body below navbar ── */}
+      {/* ── Body ── */}
       <div className="flex pt-14">
         {/* ── Sidebar ── */}
         <aside
           className={`fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)]
-          bg-gradient-to-r from-blue-100 via-white to-teal-50
-          border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700
-          transition-all duration-300
-          ${sidebarW}
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+            bg-gradient-to-r from-blue-100 via-white to-teal-50
+            border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700
+            transition-all duration-300
+            ${sidebarW}
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
         >
           <div className="overflow-y-auto overflow-x-hidden py-2 px-2 h-full dark:bg-gray-800">
             <ul className="space-y-1">
@@ -150,16 +142,18 @@ export const Dash_Board = () => {
                   )}
                 </button>
               </div>
+
+              {/* Main nav */}
               <NavItem to="/overview" icon={FiHome} label="Overview" />
-              <NavItem to="/test" icon={FiClipboard} label="Appointments" />
-              <NavItem to="/kanban" icon={FiGrid} label="Patients" />
-              <NavItem to="/calendar" icon={FiCalendar} label="Physicians" />
-              <NavItem to="/workspace" icon={FiBriefcase} label="Diagnostic" />
+              <NavItem to="/test" icon={FiCalendar} label="Appointments" />
+              <NavItem to="/kanban" icon={FiUserCheck} label="Patients" />
+              <NavItem to="/calendar" icon={FiUsers} label="Physicians" />
+              <NavItem to="/workspace" icon={FiCpu} label="Diagnostic" />
             </ul>
 
             <ul className="pt-4 mt-4 space-y-1 border-t border-gray-200 dark:border-gray-700">
-              <NavItem to="/project" icon={FiArchive} label="Branches" />
-              <NavItem to="/team" icon={FiUsers} label="Reports" />
+              <NavItem to="/project" icon={FiGitBranch} label="Branches" />
+              <NavItem to="/team" icon={FiBarChart2} label="Reports" />
               <NavItem
                 to="/notifications"
                 icon={FiBell}
