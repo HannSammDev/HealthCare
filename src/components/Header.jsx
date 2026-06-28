@@ -1,6 +1,17 @@
 import React from "react";
+import { href, useLocation } from "react-router-dom";
 
 export const Header = () => {
+
+  const NavItem = [
+    { href: "#locations", label: "Locations" },
+    { href: "#services", label: "Service" },
+    { href: "#about", label: "About" },
+  ];
+  const { hash } = useLocation();
+
+
+
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
@@ -21,20 +32,24 @@ export const Header = () => {
             HealthFirst
           </span>
         </div>
+
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-          <a
-            href="#locations"
-            className="hover:text-blue-600 transition-colors"
-          >
-            Locations
-          </a>
-          <a href="#services" className="hover:text-blue-600 transition-colors">
-            Services
-          </a>
-          <a href="#about" className="hover:text-blue-600 transition-colors">
-            About
-          </a>
+          {NavItem.map((item) => (
+            <ul key={item}>
+              <a
+                href={item.href}
+                className={`hover:text-blue-600 transition-colors text-black  ${
+                  hash === item.href
+                    ? "text-blue-600 transition-colors  font-bold"
+                    : " "
+                }`}
+              >
+                {item.label} 
+              </a>
+            </ul>
+          ))}
         </nav>
+
         <a
           href="#book"
           className=" bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"

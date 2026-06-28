@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useAuth } from "./Auth/AuthContex";
 import { auth } from "./Config/firebase";
 import { signOut } from "firebase/auth";
 import {
@@ -13,23 +12,23 @@ import {
   FiArchive,
   FiUsers,
   FiBell,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
-import { AddTaskForm } from "./components/AddTaskForm";
-import { NavLink, Outlet, useNavigate } from "react-router-dom"; // ✅ NavLink imported
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Button } from "./components/Button";
 
 export const Dash_Board = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // mobile overlay
+  const [collapsed, setCollapsed] = useState(false); // ← NEW: icon-only mode
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user, userData } = useAuth();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
         setDropdownOpen(false);
-      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -40,240 +39,147 @@ export const Dash_Board = () => {
     navigate("/");
   }
 
-  // ✅ Reusable NavLink class helper
+  // Width values driven by collapsed state
+  const sidebarW = collapsed ? "w-[60px]" : "w-[200px]";
+  const mainML = collapsed ? "md:ml-[60px]" : "md:ml-[200px]";
+
   const navClass = ({ isActive }) =>
-    `flex items-center p-2 text-base font-medium rounded-lg group transition-colors duration-150 ${
+    `flex items-center p-2 rounded-lg group transition-colors duration-150 overflow-hidden ${
       isActive
         ? "bg-blue-100 text-blue-700 dark:bg-gray-700 dark:text-white"
         : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
     }`;
 
   const iconClass =
-    "w-6 h-6 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white";
+    "w-5 h-5 flex-shrink-0 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white";
+
+  const NavItem = ({ to, icon: Icon, label, badge }) => (
+    <li>
+      <NavLink
+        to={to}
+        className={navClass}
+        onClick={() => setSidebarOpen(false)}
+      >
+        <Icon className={iconClass} />
+        {/* Label fades + collapses; does NOT shift the icon */}
+        <span
+          className={`ml-3 text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+            collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto"
+          }`}
+        >
+          {label}
+        </span>
+        {badge && !collapsed && (
+          <span className="bg-red-100 text-red-800 text-xs font-bold ml-auto px-2 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+            {badge}
+          </span>
+        )}
+      </NavLink>
+    </li>
+  );
+
+  // Replace the outer structure in Dash_Board.jsx
 
   return (
     <>
-      <div className="antialiased bg-gray-50 dark:bg-gray-900">
-        {/* ── Top Navbar ── */}
-        <nav className="flex flex-wrap items-center justify-between bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
-          <div className="flex items-center gap-2">
-            {/* Mobile menu toggle */}
-            <button
-              type="button"
-              onClick={() => setSidebarOpen((prev) => !prev)}
-              className="p-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      {/* ── Top Navbar ── */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex bg-white items-center justify-between px-4 h-14 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+        {/* Left: hamburger (mobile) + logo */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen((p) => !p)}
+            className="p-2 text-gray-600 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            <FiMenu className="w-6 h-6" />
+            <span className="sr-only">Toggle sidebar</span>
+          </button>
+
+          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+            <svg
+              className="w-4 h-4 text-white"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
             >
-              <FiMenu className="w-6 h-6" aria-hidden="true" />
-              <span className="sr-only">Toggle sidebar</span>
-            </button>
-
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <img src="./logo2.png" className="h-10 rounded-full" alt="Logo" />
-              <span className="self-center text-blue-800 text-xl font-semibold whitespace-nowrap dark:text-white">
-                Dashboard
-              </span>
-            </div>
+              <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
           </div>
+          <span className="font-display font-bold text-lg text-blue-800 dark:text-white">
+            HealthFirst
+          </span>
 
-          <div className="flex items-center gap-1">
-            {/* Search bar */}
-            <form className="hidden md:flex md:items-center md:pl-2">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <FiSearch className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-80 pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Search Task"
-                />
-              </div>
-            </form>
+          {/* Divider + breadcrumb */}
+          <span className="hidden md:block text-gray-300 dark:text-gray-600 ml-2">
+            |
+          </span>
+          <span className="hidden md:block text-sm text-gray-500 dark:text-gray-400 ml-2">
+            Overview
+          </span>
+        </div>
 
-            <AddTaskForm />
+        {/* Right: user/actions */}
+        <Button />
+      </div>
 
-            {/* ── Profile Dropdown ── */}
-            <div className="relative ml-3" ref={dropdownRef}>
-              <button
-                type="button"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              >
-                <span className="sr-only">Open user menu</span>
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
-                  alt="user photo"
-                />
-              </button>
-
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 z-50 text-base list-none bg-white rounded-xl divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                  {/* User info */}
-                  <div className="py-3 px-4">
-                    <span className="block text-sm font-semibold text-gray-900 dark:text-white">
-                      {userData?.username || "User"}
-                    </span>
-                    <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                      {userData?.email || user?.email}
-                    </span>
-                  </div>
-
-                  {/* Menu links */}
-                  <ul className="py-1 text-gray-700 dark:text-gray-300">
-                    <li>
-                      <button
-                        onClick={() => {
-                          setDropdownOpen(false);
-                          navigate("/profile");
-                        }}
-                        className="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
-                      >
-                        My profile
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          setDropdownOpen(false);
-                          navigate("/settings");
-                        }}
-                        className="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
-                      >
-                        Account settings
-                      </button>
-                    </li>
-                  </ul>
-
-                  {/* Sign out */}
-                  <ul className="py-1 text-gray-700 dark:text-gray-300">
-                    <li>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-red-500"
-                      >
-                        Sign out
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-            {/* ── End Profile Dropdown ── */}
-          </div>
-        </nav>
-
-        {/* Sidebar mobile overlay */}
-        <div
-          className={`${sidebarOpen ? "block" : "hidden"} fixed inset-0 z-30 bg-black/40 md:hidden`}
-          aria-hidden="true"
-          onClick={() => setSidebarOpen(false)}
-        />
-
+      {/* ── Body below navbar ── */}
+      <div className="flex pt-14">
         {/* ── Sidebar ── */}
         <aside
-          className={`fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0`}
-          id="drawer-navigation"
+          className={`fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)]
+          bg-gradient-to-r from-blue-100 via-white to-teal-50
+          border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700
+          transition-all duration-300
+          ${sidebarW}
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
         >
-          <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-            {/* Primary nav */}
-            <ul className="space-y-2">
-              <li>
-                <NavLink
-                  to="/overview"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
+          <div className="overflow-y-auto overflow-x-hidden py-2 px-2 h-full dark:bg-gray-800">
+            <ul className="space-y-1">
+              <div className="hidden md:flex justify-end px-2 pb-2">
+                <button
+                  onClick={() => setCollapsed((p) => !p)}
+                  className="p-0.5 rounded-lg text-blue-500 font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors"
+                  title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
-                  <FiHome className={iconClass} />
-                  <span className="ml-3">Overview</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/mytask"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiClipboard className={iconClass} />
-                  <span className="ml-3">My Tasks</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/kanban"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiGrid className={iconClass} />
-                  <span className="ml-3">Kanban</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/calendar"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiCalendar className={iconClass} />
-                  <span className="ml-3">Calendar</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/workspace"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiBriefcase className={iconClass} />
-                  <span className="ml-3">Workspace</span>
-                </NavLink>
-              </li>
+                  {collapsed ? (
+                    <FiChevronRight className="w-4 h-4" />
+                  ) : (
+                    <FiChevronLeft className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              <NavItem to="/overview" icon={FiHome} label="Overview" />
+              <NavItem to="/test" icon={FiClipboard} label="Appointments" />
+              <NavItem to="/kanban" icon={FiGrid} label="Patients" />
+              <NavItem to="/calendar" icon={FiCalendar} label="Physicians" />
+              <NavItem to="/workspace" icon={FiBriefcase} label="Diagnostic" />
             </ul>
 
-            {/* Secondary nav */}
-            <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
-              <li>
-                <NavLink
-                  to="/project"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiArchive className={iconClass} />
-                  <span className="ml-3">Project</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/team"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiUsers className={iconClass} />
-                  <span className="ml-3">Team</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/notifications"
-                  className={navClass}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FiBell className={iconClass} />
-                  <span className="ml-3">Notifications</span>
-                  <span className="bg-red-100 text-red-800 text-xs font-bold ml-3 px-2 py-1 rounded-full dark:bg-red-900 dark:text-red-300">
-                    3
-                  </span>
-                </NavLink>
-              </li>
+            <ul className="pt-4 mt-4 space-y-1 border-t border-gray-200 dark:border-gray-700">
+              <NavItem to="/project" icon={FiArchive} label="Branches" />
+              <NavItem to="/team" icon={FiUsers} label="Reports" />
+              <NavItem
+                to="/notifications"
+                icon={FiBell}
+                label="Notifications"
+                badge="3"
+              />
             </ul>
           </div>
         </aside>
 
-        {/* ── Main Content ── */}
-        <main className="p-4 md:ml-64 h-auto pt-20">
+        {/* Mobile overlay */}
+        <div
+          className={`${sidebarOpen ? "block" : "hidden"} fixed inset-0 z-30 bg-black/40 md:hidden`}
+          onClick={() => setSidebarOpen(false)}
+        />
+
+        {/* ── Main content ── */}
+        <main
+          className={`flex-1 p-1 pt-3 bg-blue-50 min-h-[calc(100vh-3.5rem)] transition-all duration-300 ${mainML}`}
+        >
           <Outlet />
         </main>
       </div>

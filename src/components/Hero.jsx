@@ -2,7 +2,7 @@ import React from "react";
 
 export const Hero = () => {
   return (
-    <section className="bg-gradient-to-br from-blue-50 via-white to-teal-50 pt-20 pb-24 px-4 sm:px-6">
+    <section className="bg-gradient-to-br from-blue-200 via-white to-teal-50 pt-20 pb-24 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 text-center lg:text-left">
