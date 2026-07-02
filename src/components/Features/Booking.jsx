@@ -6,7 +6,7 @@ export const Booking = () => {
   const initialState = {
     name: "",
     mobile: "",
-    branches: "",
+    branches: "IT Park Branch",
     reason: "",
   };
 
@@ -33,12 +33,14 @@ export const Booking = () => {
     }, 800);
   };
 
+  const isFormValid = [value.name, value.mobile, value.branches, value.reason].every(
+    (field) => String(field ?? "").trim() !== "",
+  );
+
+
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="  space-y-4"
-      >
+      <form onSubmit={handleSubmit} className="  space-y-4">
         {/* <!-- Name + Phone --> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
@@ -60,7 +62,8 @@ export const Booking = () => {
             </label>
             <input
               value={value.mobile}
-              onChange={(e) => setValue({ ...value, mobile: e.target.value })}
+              onChange={(e) => setValue({ ...value, mobile: e.target.value.replace(/\D/g, "") })}
+
               type="tel"
               placeholder="09XX XXX XXXX"
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -108,15 +111,14 @@ export const Booking = () => {
         </div>
 
         {/* <!-- Button --> */}
-       
+
         <Button
+          type="submit"
           loading={loading}
-          disabled={loading || String(value.name || '').trim() === ''}
-          onClick={handleSubmit}
+          disabled={loading || !isFormValid}
           className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold py-2 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
-          label={loading ? '' : 'Request Appointment'}
+          label={loading ? "" : "Request Appointment"}
         />
-        
       </form>
     </>
   );
