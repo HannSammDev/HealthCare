@@ -19,6 +19,7 @@ export const NotFoundPage = () => (
           variant="link"
           onClick={() => (window.location.href = "/")}
         />
+        {/* Button */}
       </div>
     </div>
   </div>
