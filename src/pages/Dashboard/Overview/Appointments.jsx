@@ -72,7 +72,7 @@ const statusStyles = {
 
 export const TodaysAppointments = () => {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    <div className="bg-white  rounded-2xl border border-gray-100 p-5 shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-base font-semibold text-gray-900">

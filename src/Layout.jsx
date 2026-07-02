@@ -1,12 +1,13 @@
 import React from "react"
 // import { LandingPage } from "./pages/login/LandingPage";
-import { Header } from "./components/Header";
-import { Hero } from "./components/Hero";
-import { Map } from "./components/Map";
-import { Location } from "./components/Locations";
-import { Services } from "./components/Services";
-import { Book } from "./components/Book";
-import { Footer } from "./components/Footer";
+// import { Header } from "./components/Features/Header";
+import {Header} from "./components/Features/Header"
+import { Hero } from "./components/Features/Hero";
+import { Map } from "./components/Features/Map";
+import { Location } from "./components/Features/Locations";
+import { Services } from "./components/Features/Services";
+import { Book } from "./components/Features/Book";
+import { Footer } from "./components/Features/Footer";
 import { ScrollTop } from "primereact/scrolltop";
 
 const Layout = () => {

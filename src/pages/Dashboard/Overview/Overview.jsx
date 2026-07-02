@@ -1,6 +1,8 @@
 import { Card } from "primereact/card";
 import { FiCalendar, FiUsers, FiFileText, FiXCircle } from "react-icons/fi";
 import TodaysAppointments from "./Appointments";
+import { Book } from "../../../components/Features/Book";
+import { Booking } from "../../../components/Features/Booking";
 
 export const Overview = () => {
   const today = new Date();
@@ -60,14 +62,14 @@ export const Overview = () => {
       </div>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="grid mb-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {stats.map((item, index) => {
           const Icon = item.icon;
 
           return (
             <Card
               key={index}
-              className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-300  "
             >
               <div className="flex items-start justify-between">
                 <p className="text-gray-500 text-sm font-light">{item.title}</p>
@@ -92,7 +94,22 @@ export const Overview = () => {
           );
         })}
       </div>
-      <TodaysAppointments />
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_0.8fr]">
+        <TodaysAppointments />
+        <div className="flex justify-end not-first:bg-white dark:bg-white p-5 rounded-2xl border border-gray-100 shadow-sm ">
+          <div className="w-full max-w-md">
+            <div className="mb-5">
+              <h2 className="text-base font-semibold text-gray-900">
+                Book an appointment
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">
+                Fill out the form below to book an appointment.
+              </p>
+            </div>
+            <Booking />
+          </div>
+        </div>
+      </div>
     </>
   );
 };

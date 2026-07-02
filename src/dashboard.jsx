@@ -15,9 +15,12 @@ import {
   FiGitBranch,
   FiBarChart2,
   FiCpu,
+  FiArrowRight,
+  FiArrowLeft,
 } from "react-icons/fi";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Button } from "./components/Button";
+import { SupAdminProfile } from "./components/Features/SupAdminProfile";
+
 
 export const Dash_Board = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -113,7 +116,7 @@ export const Dash_Board = () => {
             Overview
           </span>
         </div>
-        <Button />
+        <SupAdminProfile/>
       </div>
 
       {/* ── Body ── */}
@@ -121,7 +124,7 @@ export const Dash_Board = () => {
         {/* ── Sidebar ── */}
         <aside
           className={`fixed top-14 left-0 z-40 h-[calc(100vh-3.5rem)]
-            bg-gradient-to-r from-blue-100 via-white to-teal-50
+            bg-linear-to-r from-blue-100 via-white to-teal-50
             border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700
             transition-all duration-300
             ${sidebarW}
@@ -137,8 +140,10 @@ export const Dash_Board = () => {
                 >
                   {collapsed ? (
                     <FiChevronRight className="w-4 h-4" />
+                    // <FiArrowRight className=" w-4 h-4 rounded-full" />
                   ) : (
                     <FiChevronLeft className="w-4 h-4" />
+                    // <FiArrowLeft className=" w-4 h-4 rounded-full" />
                   )}
                 </button>
               </div>
